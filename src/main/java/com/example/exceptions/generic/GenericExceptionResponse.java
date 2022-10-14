@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GenericExceptionResponse {
-    private Date   processedAt;
+    private String processedAt;
     private String message;
     private String details;
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import utils.Utils;
 
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class AccountNumberEmptyExceptionHandler  extends ResponseEntityException
 
     @ExceptionHandler(PaymentTransactionException.class)
     public final ResponseEntity<Object> configExceptionHandler(PaymentTransactionException ex, WebRequest request) {
-        return new ResponseEntity(new GenericExceptionResponse(new Date(), ex.getMessage(),
+        return new ResponseEntity(new GenericExceptionResponse(Utils.getTime(), ex.getMessage(),
                 request.getDescription(false)), HttpStatus.NOT_FOUND);
     }
 }

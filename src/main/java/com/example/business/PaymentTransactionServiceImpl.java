@@ -84,6 +84,13 @@ public class PaymentTransactionServiceImpl implements PaymentTransactionService 
             currentBalance = account.getBalance();
             if (currentBalance == null) throw new PaymentTransactionException(BALANCE_REQUIRED);
             if (currentBalance.toString().contains("-")) throw new PaymentTransactionException(BALANCE_NOT_NEGATIVE);
+
+            Optional<Account> findAccountExists = accountRepository.findByAccountNumber(accountNumber);
+            findAccountExists.ifPresent(value -> {
+                account.setIdAccount(value.getIdAccount());
+                account.setBalance(value.getBalance().add(currentBalance));
+            });
+
         } else {
             throw new PaymentTransactionException(OBJECT_ACCOUNT_REQUIRED);
         }

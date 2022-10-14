@@ -33,7 +33,7 @@ public class PaymentTransactionController {
                 .doOnTerminate(() ->
                         log.info("Terminate {}.{} method", "PaymentTransactionController", "addAccount"));
     }
-//
+
     @GetMapping("/account/{accountNumber}")
     public Maybe<Account> findByAccountNumber(@PathVariable String accountNumber) {
         log.info("Starting {}.{} method", "PaymentTransactionController", "createAccount");
