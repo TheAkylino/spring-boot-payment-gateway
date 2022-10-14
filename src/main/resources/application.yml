@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: aolazo2437124371.
+    url: jdbc:mysql://localhost:3306/practiceproject?serverTimezone=UTC
+    username: root
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
