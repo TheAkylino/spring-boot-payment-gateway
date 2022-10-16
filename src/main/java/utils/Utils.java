@@ -30,4 +30,14 @@ public class Utils {
         Long rightLimit = 10l;
         return leftLimit + new Random().nextLong() * (rightLimit - leftLimit);
     }
+
+    public static String generateBankAccount() {
+        Random rand = new Random();
+        String value;
+        String result;
+        int numberRand = rand.nextInt(100000000);
+        value = "0011-0426-";
+        result = value.concat(String.valueOf(numberRand));
+        return result;
+    }
 }

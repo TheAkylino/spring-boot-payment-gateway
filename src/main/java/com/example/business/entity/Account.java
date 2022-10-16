@@ -1,6 +1,8 @@
 package com.example.business.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,6 @@ import utils.Utils;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-
 
 
 @Data
@@ -24,36 +25,19 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAccount;
 
-    @Column(name="DATE_TRANSACTION", nullable=false, updatable=false)
+    @Column(name = "DATE_TRANSACTION", nullable = false, updatable = false)
     private String dateTransaction = Utils.getTime();
 
     @Column(name = "ACCOUNT_NUMBER", length = 20)
     private String accountNumber;
 
     @Column(name = "BALANCE", updatable = true, nullable = true)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private BigDecimal balance;
 
-    @Column(name = "ACCOUNT_ORIGIN",  length = 20)
-    @JsonIgnore
-    private String accountOrigin;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "fk_customer", nullable = false, updatable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Customer customer;
 
-    @Column(name = "BALANCE_ACCOUNT_ORIGIN")
-    @JsonIgnore
-    private BigDecimal balanceAccountOrigin;
-
-    @Column(name = "ACCOUNT_DESTINATION", length = 20)
-    @JsonIgnore
-    private String accountDestination;
-
-    @Column(name = "BALANCE_ACCOUNT_Destination")
-    @JsonIgnore
-    private BigDecimal balanceAccountDestination;
-
-    @Column(name = "BALANCE_TRANSFER")
-    @JsonIgnore
-    private BigDecimal balanceTransfer;
-
-    @Column(name = "OPERATION_NUMBER")
-    @JsonIgnore
-    private String operationNumber;
 }
