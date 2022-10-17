@@ -25,10 +25,12 @@ public class Utils {
         return paymentId;
     }
 
-    public static Long generateRandom() {
-        Long leftLimit = 1l;
-        Long rightLimit = 10l;
-        return leftLimit + new Random().nextLong() * (rightLimit - leftLimit);
+    public static String generateNumberOperarion() {
+        String result;
+        Random rand = new Random();
+        int numberRand = rand.nextInt(100000000);
+        result = String.valueOf(numberRand);
+        return result;
     }
 
     public static String generateBankAccount() {

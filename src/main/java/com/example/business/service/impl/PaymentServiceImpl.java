@@ -10,6 +10,7 @@ import io.reactivex.Single;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import utils.Utils;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -31,41 +32,83 @@ public class PaymentServiceImpl implements PaymentService {
     public Single<Payment> transactionP2P(Payment payment)
             throws ExecutionException, InterruptedException {
         log.info("Starting {}.{} method", "PaymentServiceImpl", "transactionP2P");
-        return validatetransactionPayment(payment)
+        return validatetransactionPaymentP2P(payment)
                 .map(objectpayment -> {
                     paymentRepository.save(payment);
                     return Single.just(payment);
                 }).toFuture().get();
     }
 
-    private Single<Payment> validatetransactionPayment(Payment payment) {
+    @Override
+    public Single<Payment> transactionP2M(Payment payment)
+            throws ExecutionException, InterruptedException {
+        log.info("Starting {}.{} method", "PaymentServiceImpl", "transactionP2M");
+        return validatetransactionPaymentP2M(payment)
+                .map(objectpayment -> {
+                    paymentRepository.save(payment);
+                    return Single.just(payment);
+                }).toFuture().get();
+    }
+
+    private Single<Payment> validatetransactionPaymentP2P(Payment payment) {
         log.info("Starting {}.{} method", "AccountServiceImpl", "validateParametersCustomer");
         // TODO: VALIDAR
 
         return logicP2P(payment);
     }
 
+    private Single<Payment> validatetransactionPaymentP2M(Payment payment) {
+        log.info("Starting {}.{} method", "AccountServiceImpl", "validateParametersCustomer");
+        // TODO: VALIDAR
+
+        return logicP2P(payment);
+    }
+
+
     //send money accountOrigin to accountDestination
     private Single<Payment> logicP2P(Payment payment) {
         Account accountOrigin = null;
         Account accountDestination = null;
 
+        // Se aplica primero la logica para obtener el saldo de la cuenta origen y se descuenta
+        // Al momento de transferir a la cuenta destino
         accountOrigin = getDataWithAccountOrigin(payment);
         payment.setBalanceAccountOrigin(accountOrigin.getBalance());
-
-        accountDestination = getDataWithAccountDestination(payment);
-        payment.setBalanceAccountDestination(accountDestination.getBalance());
-
         accountOrigin.setBalance(accountOrigin.getBalance().subtract(payment.getBalanceTransfer()));
         accountRepository.save(accountOrigin);
+
+        // Se aplica la logica para obtener el saldo de la cuenta destino y se agrega
+        // Al momento de transferir a la cuenta origen
+        accountDestination = getDataWithAccountDestination(payment);
+        payment.setBalanceAccountDestination(accountDestination.getBalance());
+        accountDestination.setBalance(payment.getBalanceTransfer().add(accountDestination.getBalance()));
+        accountRepository.save(accountDestination);
+
+        payment.setOperationNumber(Utils.generateNumberOperarion());
         return Single.just(payment);
     }
 
     //send money accountDestination to accountOrigin
     private Single<Payment> logicP2M(Payment payment) {
+        Account accountOrigin = null;
+        Account accountDestination = null;
 
+        accountDestination = getDataWithAccountDestination(payment);
+        payment.setBalanceAccountDestination(accountDestination.getBalance());
+        accountDestination.setBalance(accountDestination.getBalance().subtract(payment.getBalanceTransfer()));
+        accountRepository.save(accountDestination);
+
+
+        accountOrigin = getDataWithAccountOrigin(payment);
+        payment.setBalanceAccountOrigin(accountOrigin.getBalance());
+        accountOrigin.setBalance(accountOrigin.getBalance().add(payment.getBalanceTransfer()));
+        accountRepository.save(accountOrigin);
+
+
+        payment.setOperationNumber(Utils.generateNumberOperarion());
         return Single.just(payment);
     }
+
 
     private Account getDataWithAccountOrigin(Payment payment) {
         Account account = new Account();

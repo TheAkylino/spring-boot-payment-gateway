@@ -75,4 +75,12 @@ public class PaymentTransactionController {
         log.info("Starting {}.{} method", "PaymentTransactionController", "paymentTransactionP2P");
         return paymentService.transactionP2P(payment);
     }
+
+    @PostMapping("/paymentTransaction/p2m")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Single<Payment> paymentTransactionP2m(@RequestBody Payment payment)
+            throws ExecutionException, InterruptedException {
+        log.info("Starting {}.{} method", "PaymentTransactionController", "paymentTransactionP2m");
+        return paymentService.transactionP2M(payment);
+    }
 }
