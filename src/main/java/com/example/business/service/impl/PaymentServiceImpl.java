@@ -19,7 +19,7 @@ import static utils.Constant.ACCOUNT_ORIGIN_NOT_FOUND;
 
 @Slf4j
 @Service
-public class PaymentServiceImpl  implements PaymentService {
+public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     private PaymentRepository paymentRepository;
@@ -40,14 +40,29 @@ public class PaymentServiceImpl  implements PaymentService {
 
     private Single<Payment> validatetransactionPayment(Payment payment) {
         log.info("Starting {}.{} method", "AccountServiceImpl", "validateParametersCustomer");
-        Account accountOrigin =  null;
-        Account accountDestination =  null;
+        // TODO: VALIDAR
+
+        return logicP2P(payment);
+    }
+
+    //send money accountOrigin to accountDestination
+    private Single<Payment> logicP2P(Payment payment) {
+        Account accountOrigin = null;
+        Account accountDestination = null;
 
         accountOrigin = getDataWithAccountOrigin(payment);
         payment.setBalanceAccountOrigin(accountOrigin.getBalance());
 
         accountDestination = getDataWithAccountDestination(payment);
         payment.setBalanceAccountDestination(accountDestination.getBalance());
+
+        accountOrigin.setBalance(accountOrigin.getBalance().subtract(payment.getBalanceTransfer()));
+        accountRepository.save(accountOrigin);
+        return Single.just(payment);
+    }
+
+    //send money accountDestination to accountOrigin
+    private Single<Payment> logicP2M(Payment payment) {
 
         return Single.just(payment);
     }

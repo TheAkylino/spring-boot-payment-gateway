@@ -12,6 +12,7 @@ public interface AccountRepository extends CrudRepository<Account,Long> {
     @Override
     Account save(Account account);
 
+
     @Query(value = "SELECT * FROM ACCOUNTS ACC WHERE ACC.ACCOUNT_NUMBER  = :accountNumber",
             nativeQuery = true)
     Optional<Account> findByAccountNumber(@Param("accountNumber") String accountNumber);
