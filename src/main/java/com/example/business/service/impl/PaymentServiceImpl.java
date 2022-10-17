@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import utils.Utils;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import static utils.Constant.ACCOUNT_DESTINATION_NOT_FOUND;
-import static utils.Constant.ACCOUNT_ORIGIN_NOT_FOUND;
+import static utils.Constant.*;
 
 @Slf4j
 @Service
@@ -52,16 +52,37 @@ public class PaymentServiceImpl implements PaymentService {
 
     private Single<Payment> validatetransactionPaymentP2P(Payment payment) {
         log.info("Starting {}.{} method", "AccountServiceImpl", "validateParametersCustomer");
-        // TODO: VALIDAR
+        if (payment != null) {
 
+            if(payment.getAccountOrigin() == null) throw new PaymentTransactionException(ACCOUNT_ORIGIN_REQUIRED);
+            if(payment.getAccountOrigin().isEmpty()) throw new PaymentTransactionException(ACCOUNT_ORIGIN_EMPTY);
+
+            if(payment.getBalanceTransfer() == null) throw new PaymentTransactionException(BALANCE_REQUIRED);
+            if(payment.getBalanceTransfer().toString().contains("-")) throw new PaymentTransactionException(BALANCE_NOT_NEGATIVE);
+
+            if(payment.getAccountDestination() == null) throw new PaymentTransactionException(ACCOUNT_DESTINATION_REQUIRED);
+            if(payment.getAccountDestination().isEmpty()) throw new PaymentTransactionException(ACCOUNT_DESTINATION_EMPTY);
+        } else {
+            throw new PaymentTransactionException("EL OBJECTO PATMENT NO PUEDE ESTAR NULL");
+        }
         return logicP2P(payment);
     }
 
     private Single<Payment> validatetransactionPaymentP2M(Payment payment) {
         log.info("Starting {}.{} method", "AccountServiceImpl", "validateParametersCustomer");
-        // TODO: VALIDAR
+        if (payment != null) {
+            if(payment.getAccountOrigin() == null) throw new PaymentTransactionException(ACCOUNT_ORIGIN_REQUIRED);
+            if(payment.getAccountOrigin().isEmpty()) throw new PaymentTransactionException(ACCOUNT_ORIGIN_EMPTY);
 
-        return logicP2P(payment);
+            if(payment.getBalanceTransfer() == null) throw new PaymentTransactionException(BALANCE_REQUIRED);
+            if(payment.getBalanceTransfer().toString().contains("-")) throw new PaymentTransactionException(BALANCE_NOT_NEGATIVE);
+
+            if(payment.getAccountDestination() == null) throw new PaymentTransactionException(ACCOUNT_DESTINATION_REQUIRED);
+            if(payment.getAccountDestination().isEmpty()) throw new PaymentTransactionException(ACCOUNT_DESTINATION_EMPTY);
+        } else {
+            throw new PaymentTransactionException("EL OBJECTO PATMENT NO PUEDE ESTAR NULL");
+        }
+        return logicP2M(payment);
     }
 
 

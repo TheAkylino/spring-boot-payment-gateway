@@ -59,11 +59,10 @@ public class AccountServiceImpl implements AccountService {
             account.setIdAccount(findAccountNumber.get().getIdAccount());
             account.setAccountNumber(findAccountNumber.get().getAccountNumber());
 
-            if (findAccountNumber.get().getBalance() != null) {
-                // balance ya existente
-                account.setBalance(findAccountNumber.get().getBalance());
-            } else {
+            if (findAccountNumber.get().getBalance() == null) {
                 account.setBalance(account.getBalance());
+            } else {
+                account.setBalance(findAccountNumber.get().getBalance().add(account.getBalance()));
             }
             account.setDateTransaction(findAccountNumber.get().getDateTransaction());
             account.setCustomer(findAccountNumber.get().getCustomer());

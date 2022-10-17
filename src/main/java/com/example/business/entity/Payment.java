@@ -25,13 +25,13 @@ public class Payment {
     @Column(name="DATE_TRANSACTION", nullable=false, updatable=false)
     private String dateTransaction = Utils.getTime();
 
-    @Column(name = "ACCOUNT_ORIGIN", updatable = true, nullable = false, unique = true, length = 20)
+    @Column(name = "ACCOUNT_ORIGIN", updatable = true, nullable = false, length = 20)
     private String accountOrigin;
 
     @Column(name = "BALANCE_ACCOUNT_ORIGIN", updatable = true, nullable = true)
     private BigDecimal balanceAccountOrigin;
 
-    @Column(name = "ACCOUNT_DESTINATION", updatable = true, nullable = false, unique = true, length = 20)
+    @Column(name = "ACCOUNT_DESTINATION", updatable = true, nullable = false, length = 20)
     private String accountDestination;
 
     @Column(name = "BALANCE_ACCOUNT_DESTINATION", updatable = true, nullable = true)

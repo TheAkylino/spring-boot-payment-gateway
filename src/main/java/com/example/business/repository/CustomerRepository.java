@@ -8,4 +8,6 @@ public interface CustomerRepository  extends CrudRepository<Customer,Long> {
     @Override
     Customer save(Customer customer);
 
+
+    Customer findCustomerByDni(String dni);
 }

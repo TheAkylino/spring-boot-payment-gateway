@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static utils.Constant.OBJECT_CUSTOMER_IS_NULL;
+import static utils.Constant.*;
 
 @Slf4j
 @Service
@@ -45,8 +45,19 @@ public class CustomerServiceImpl  implements CustomerService {
 
     private Single<Customer> validateParametersCustomer(Customer customer){
         if (customer == null) throw new PaymentTransactionException(OBJECT_CUSTOMER_IS_NULL);
-        // TODO : VALIDAR
+        if (customer.getFirtname() == null) throw new PaymentTransactionException(CUSTOMER_FIRT_NAME_REQUIRED);
+        if (customer.getFirtname().isEmpty()) throw new PaymentTransactionException(CUSTOMER_FIRT_NAME_EMPTY);
 
+        if (customer.getLastname() == null) throw new PaymentTransactionException(CUSTOMER_LAST_NAME_REQUIRED);
+        if (customer.getLastname().isEmpty()) throw new PaymentTransactionException(CUSTOMER_LAST_NAME_EMPTY);
+
+        if (customer.getDni() == null) throw new PaymentTransactionException(CUSTOMER_DNI_REQUIRED);
+        if (customer.getDni().isEmpty()) throw new PaymentTransactionException(CUSTOMER_DNI_EMPTY);
+
+        Customer dniFindDataBase =  customerRepository.findCustomerByDni(customer.getDni());
+        if (dniFindDataBase != null) {
+            throw new PaymentTransactionException(CUSTOMER_WITH_DNI_EXISTING);
+        }
         return associateCustomerWithAccountNumber(customer);
     }
 

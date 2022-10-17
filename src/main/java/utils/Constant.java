@@ -6,6 +6,7 @@ public class Constant {
     public static final String OBJECT_ACCOUNT_REQUIRED = "THE OBJECT ACCOUNT IS REQUIRED";
     public static final String OBJECT_PAYMENT_REQUIRED = "THE OBJECT PAYMENT IS REQUIRED";
 
+
     public static final String ACCOUNT_NUMBER_EMPTY = "THE ACCOUNT NUMBER CANNOT BE EMPTY";
     public static final String ACCOUNT_NUMBER_REQUIRED = "THE ACCOUNT NUMBER IS REQUIRED";
     public static final String ACCOUNT_NUMBER_NOT_FOUND = "THE ACCOUNT NUMBER NOT FOUND";
@@ -23,5 +24,19 @@ public class Constant {
     public static final String ACCOUNT_DESTINATION_NOT_FOUND = "THE ACCOUNT NUMBER DESTINATION NOT FOUND";
     public static final String ACCOUNT_DESTINATION_REQUIRED = "THE ACCOUNT NUMBER DESTINATION IS REQUIRED";
 
-;
+
+    public static final String CUSTOMER_FIRT_NAME_EMPTY = "THE FIRT NAME CANNOT BE EMPTY";
+
+    public static final String CUSTOMER_FIRT_NAME_REQUIRED = "THE FIRT NAME IS REQUIRED";
+
+    public static final String CUSTOMER_LAST_NAME_EMPTY = "THE LAST NAME CANNOT BE EMPTY";
+
+    public static final String CUSTOMER_LAST_NAME_REQUIRED = "THE LAST NAME IS REQUIRED";
+
+    public static final String CUSTOMER_DNI_EMPTY = "THE DNI CANNOT BE EMPTY";
+
+    public static final String CUSTOMER_DNI_REQUIRED = "THE DNI IS REQUIRED";
+
+    public static final String CUSTOMER_WITH_DNI_EXISTING = "THE CUSTOMER WITH THIS DNI NUMBER IS ALREADY EXISTING";
+
 }
