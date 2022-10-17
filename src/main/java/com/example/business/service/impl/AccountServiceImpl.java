@@ -1,7 +1,6 @@
 package com.example.business.service.impl;
 
 import com.example.business.entity.Account;
-import com.example.business.entity.Customer;
 import com.example.business.repository.AccountRepository;
 import com.example.business.repository.CustomerRepository;
 import com.example.business.service.AccountService;
@@ -28,9 +27,10 @@ public class AccountServiceImpl implements AccountService {
     private CustomerRepository customerRepository;
 
     @Override
-    public Single<Account> addBalance(Account account) throws ExecutionException, InterruptedException {
+    public Single<Account> addBalance(Account account)
+            throws ExecutionException, InterruptedException {
         log.info("Starting {}.{} method", "AccountServiceImpl", "addBalance");
-        return validateParametersCustomer(account)
+        return validateParametersAccount(account)
                 .map(objectAccount -> {
                     accountRepository.save(account);
                     return Single.just(account);
@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
     public Single<Account> modifyBalance(Account account)
             throws ExecutionException, InterruptedException {
         log.info("Starting {}.{} method", "AccountServiceImpl", "modifyBalance");
-        return validateParametersCustomer(account)
+        return validateParametersAccount(account)
                 .map(objectAccount -> {
                     accountRepository.save(account);
                     return Single.just(account);
@@ -49,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-    private Single<Account> validateParametersCustomer(Account account) {
+    private Single<Account> validateParametersAccount(Account account) {
         log.info("Starting {}.{} method", "AccountServiceImpl", "validateParametersCustomer");
         if (account == null) throw new PaymentTransactionException(OBJECT_CUSTOMER_IS_NULL);
         if (account.getAccountNumber() != null) {
